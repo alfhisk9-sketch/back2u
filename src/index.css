@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #059669;
+    --primary-hover: #047857;
+    --primary-dark: #064E3B;
+    --primary-light: #ECFDF5;
+    
+    --bg-page: #FAF9F6;
+    --bg-card: #FFFFFF;
+    --bg-muted: #F1F5F2;
+    --bg-sage: #E7EFEA;
+    
+    --text-main: #12241E;
+    --text-muted: #536B63;
+    --text-subtle: #7C938C;
+    
+    --accent-amber: #D97706;
+    --accent-amber-light: #FEF3C7;
+    
+    --border-soft: #E1E8E4;
+    --border-strong: #CBD5CE;
+    
+    --radius-sm: 0.375rem;
+    --radius-md: 0.625rem;
+    --radius-lg: 0.875rem;
+    --radius-xl: 1.25rem;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5ce;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a39b;
+}
+
+/* Glassmorphism & Card Elevation Utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(225, 232, 228, 0.85);
+}
+
+.card-subtle {
+  background: #ffffff;
+  border: 1px solid #E1E8E4;
+  box-shadow: 0 1px 3px 0 rgba(18, 36, 30, 0.04), 0 1px 2px -1px rgba(18, 36, 30, 0.04);
+}
+
+.card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(18, 36, 30, 0.08), 0 8px 10px -6px rgba(18, 36, 30, 0.04);
+  border-color: #B9C8BF;
+}
+
+/* Match Score Ring */
+.match-score-badge {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
