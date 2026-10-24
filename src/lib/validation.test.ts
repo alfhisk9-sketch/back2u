@@ -59,12 +59,29 @@ describe('Validation Schemas (Zod)', () => {
     expect(reviewClaimSchema.safeParse({ status: 'approved', handover_instructions: 'Security desk' }).success).toBe(true);
     expect(reviewClaimSchema.safeParse({ status: 'rejected', review_notes: 'Proof mismatched' }).success).toBe(true);
     expect(reviewClaimSchema.safeParse({ status: 'completed' }).success).toBe(true);
-    // @ts-expect-error invalid status
     expect(reviewClaimSchema.safeParse({ status: 'unknown_status' }).success).toBe(false);
   });
 
   it('validates authentication credentials', () => {
     expect(loginSchema.safeParse({ email: 'test@stanford.edu', password: 'password123' }).success).toBe(true);
     expect(loginSchema.safeParse({ email: 'invalid-email', password: '123' }).success).toBe(false);
+
+    expect(
+      registerSchema.safeParse({
+        full_name: 'Alice Chen',
+        email: 'alice@stanford.edu',
+        password: 'securepass123',
+        campus_id: 'campus-1',
+      }).success
+    ).toBe(true);
+
+    expect(
+      registerSchema.safeParse({
+        full_name: 'A',
+        email: 'bad-email',
+        password: '123',
+        campus_id: '',
+      }).success
+    ).toBe(false);
   });
 });

@@ -16,6 +16,7 @@ import {
   getCurrentCampusId,
   getCurrentUser,
   getMatchesForItem,
+  uploadItemImage,
 } from '../services/dataService';
 import type { Campus, ItemReportType, MatchRecord } from '../types';
 import {
@@ -37,6 +38,7 @@ export const ReportPage: React.FC = () => {
   const [campuses, setCampuses] = useState<Campus[]>([]);
   const [activeCampusId, setActiveCampusId] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Success Match Modal state
@@ -93,17 +95,15 @@ export const ReportPage: React.FC = () => {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setImagePreview(result);
-        setValue('image_url', result);
-      };
-      reader.readAsDataURL(file);
+      setSelectedFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setValue('image_url', previewUrl);
     }
   };
 
   const removeImage = () => {
+    setSelectedFile(null);
     setImagePreview(null);
     setValue('image_url', undefined);
   };
@@ -112,6 +112,13 @@ export const ReportPage: React.FC = () => {
     setIsSubmitting(true);
     try {
       const user = await getCurrentUser();
+
+      // Upload to storage if a file was selected
+      let uploadedUrl = data.image_url;
+      if (selectedFile) {
+        uploadedUrl = await uploadItemImage(selectedFile);
+      }
+
       const item = await createItem({
         campus_id: activeCampusId,
         user_id: user.id,
@@ -123,7 +130,7 @@ export const ReportPage: React.FC = () => {
         color: data.color,
         location_name: data.location_name,
         date_lost_found: data.date_lost_found,
-        image_url: data.image_url,
+        image_url: uploadedUrl,
         is_sensitive: data.is_sensitive,
       });
 

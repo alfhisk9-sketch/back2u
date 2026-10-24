@@ -30,6 +30,13 @@ export const DevBar: React.FC = () => {
     return subscribeDataChanges(refresh);
   }, []);
 
+  const isDemo = import.meta.env.VITE_DEMO_MODE === 'true' || import.meta.env.DEV;
+
+  // Security Hardening: Never render DevBar in production unless explicitly in demo mode
+  if (import.meta.env.PROD && !isDemo) {
+    return null;
+  }
+
   const demoUsers = getAvailableDemoUsers();
 
   return (

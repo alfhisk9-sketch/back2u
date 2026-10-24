@@ -38,8 +38,10 @@ export const ModeratorPage: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<'items' | 'abuse' | 'stats'>('items');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadData = async () => {
+    setIsLoading(true);
     const user = await getCurrentUser();
     setCurrentUser(user);
 
@@ -55,6 +57,7 @@ export const ModeratorPage: React.FC = () => {
 
     const stats = await getCampusMetrics(campusId);
     setMetrics(stats);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -81,6 +84,15 @@ export const ModeratorPage: React.FC = () => {
       }
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center text-xs text-[#536B63]">
+        <div className="w-8 h-8 border-2 border-amber-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        Verifying campus moderator credentials...
+      </div>
+    );
+  }
 
   // If user is a student, show role explanation and quick switch helper
   if (currentUser && currentUser.role === 'student') {

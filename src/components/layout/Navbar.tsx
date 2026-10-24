@@ -22,6 +22,7 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
   subscribeDataChanges,
+  signOutUser,
 } from '../../services/dataService';
 import type { Profile, Campus, Notification } from '../../types';
 import { Button } from '../ui/Button';
@@ -320,7 +321,10 @@ export const Navbar: React.FC = () => {
 
                     <Link
                       to="/login"
-                      onClick={() => setShowUserMenu(false)}
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        signOutUser();
+                      }}
                       className="flex items-center gap-2 px-4 py-2 text-xs text-rose-600 hover:bg-rose-50"
                     >
                       <LogOut className="w-4 h-4" />
