@@ -4,6 +4,7 @@ import { MapPin, Calendar, Tag, ShieldAlert } from 'lucide-react';
 import type { Item } from '../../types';
 import { Badge } from '../ui/Badge';
 import { CATEGORY_LABELS } from '../../lib/validation';
+import { formatDate } from '../../lib/formatters';
 
 interface ItemCardProps {
   item: Item;
@@ -71,7 +72,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
           <div className="flex items-center justify-between text-[11px]">
             <div className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-[#7C938C] shrink-0" />
-              <span>{item.date_lost_found}</span>
+              <span>{formatDate(item.date_lost_found)}</span>
             </div>
 
             <Link

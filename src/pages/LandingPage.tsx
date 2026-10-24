@@ -90,10 +90,10 @@ export const LandingPage: React.FC = () => {
           {/* Tagline Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800 mb-6 shadow-2xs">
             <Sparkles className="w-4 h-4 text-emerald-600" />
-            <span>Campus Lost & Found Platform</span>
+            <span>DNR Campus Recovery</span>
             {activeCampus && (
               <span className="text-emerald-950 font-bold border-l border-emerald-300 pl-2">
-                {activeCampus.name.split(' ')[0]} Edition
+                DNRCET Bhimavaram
               </span>
             )}
           </div>
@@ -107,7 +107,7 @@ export const LandingPage: React.FC = () => {
           </h1>
 
           <p className="mt-5 text-base sm:text-lg text-[#536B63] max-w-2xl mx-auto leading-relaxed">
-            A centralized, privacy-first recovery platform for universities. Report missing belongings, get intelligent match suggestions, verify claims, and coordinate safe campus handovers.
+            Centralized recovery platform for DNR College of Engineering & Technology. Report lost belongings, discover intelligent matches, verify claims securely, and coordinate campus handovers.
           </p>
 
           {/* Instant Search Bar */}
@@ -121,7 +121,7 @@ export const LandingPage: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search lost items (e.g. Student ID, Hydro Flask, AirPods, Keys)..."
+                placeholder="Search lost items (e.g. Student ID, Calculator, Lab Record Book, Backpack, Keys)..."
                 className="w-full px-3 py-2.5 text-sm text-[#12241E] placeholder-[#8EA59E] focus:outline-none bg-transparent"
               />
             </div>
@@ -369,7 +369,7 @@ export const LandingPage: React.FC = () => {
               <div className="mt-4 space-y-3 text-xs">
                 <div>
                   <div className="flex justify-between text-[#536B63] mb-1">
-                    <span>Category: Campus ID Card</span>
+                    <span>Category: Electronics (Scientific Calculator)</span>
                     <span className="font-semibold text-[#12241E]">30 / 30 pts</span>
                   </div>
                   <div className="w-full bg-[#E1E8E4] h-2 rounded-full overflow-hidden">
@@ -379,7 +379,7 @@ export const LandingPage: React.FC = () => {
 
                 <div>
                   <div className="flex justify-between text-[#536B63] mb-1">
-                    <span>Keywords: "student", "card", "red", "lanyard"</span>
+                    <span>Keywords: "casio", "scientific", "calculator", "library"</span>
                     <span className="font-semibold text-[#12241E]">23.5 / 25 pts</span>
                   </div>
                   <div className="w-full bg-[#E1E8E4] h-2 rounded-full overflow-hidden">
@@ -389,7 +389,7 @@ export const LandingPage: React.FC = () => {
 
                 <div>
                   <div className="flex justify-between text-[#536B63] mb-1">
-                    <span>Location: Tresidder Memorial Union</span>
+                    <span>Location: Main Library (Reading Hall)</span>
                     <span className="font-semibold text-[#12241E]">20 / 20 pts</span>
                   </div>
                   <div className="w-full bg-[#E1E8E4] h-2 rounded-full overflow-hidden">
@@ -409,7 +409,7 @@ export const LandingPage: React.FC = () => {
               </div>
 
               <div className="mt-5 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 leading-relaxed font-medium">
-                💡 <strong>Explanation:</strong> Identical item category • Matched keywords (student, card, red) • Same reported building location • Reported within 24 hours of each other.
+                💡 <strong>Explanation:</strong> Identical item category (electronics) • Matched keywords (casio, scientific, calculator) • Same campus facility (Main Library) • Reported within 24 hours.
               </div>
             </div>
           </div>

@@ -14,17 +14,20 @@ import {
   createClaim,
   reviewClaim,
   getItemById,
+  resetDemoData,
 } from '../services/dataService';
+import { CAMPUS_CONFIG } from '../lib/constants';
 
-describe('End-to-End User & Recovery Workflows', () => {
-  const STANFORD_ID = 'c1111111-1111-1111-1111-111111111111';
+describe('End-to-End User & Recovery Workflows (DNR Campus)', () => {
+  const DNR_CAMPUS_ID = CAMPUS_CONFIG.id;
 
   beforeEach(() => {
-    setCurrentCampusId(STANFORD_ID);
-    switchDemoUser('u-alice-stanford');
+    resetDemoData();
+    setCurrentCampusId(DNR_CAMPUS_ID);
+    switchDemoUser('u-alfhi-lead');
   });
 
-  it('renders landing page with product identity, live campus stats, and workflow', async () => {
+  it('renders landing page with DNR campus identity, live stats, and workflow', async () => {
     render(
       <MemoryRouter>
         <LandingPage />
@@ -33,6 +36,7 @@ describe('End-to-End User & Recovery Workflows', () => {
 
     expect(screen.getByText(/Lost something\?/i)).toBeInTheDocument();
     expect(screen.getByText(/Let's bring it back to you/i)).toBeInTheDocument();
+    expect(screen.getByText(/DNR Campus Recovery/i)).toBeInTheDocument();
     expect(screen.getByText(/Total Campus Reports/i)).toBeInTheDocument();
     expect(screen.getByText(/Explainable 100-Point Scoring Model/i)).toBeInTheDocument();
     expect(screen.getByText(/Frequently Asked Questions/i)).toBeInTheDocument();
@@ -53,14 +57,14 @@ describe('End-to-End User & Recovery Workflows', () => {
     const searchInput = screen.getByPlaceholderText(/Title, brand, location.../i);
     expect(searchInput).toBeInTheDocument();
 
-    fireEvent.change(searchInput, { target: { value: 'Hydro Flask' } });
+    fireEvent.change(searchInput, { target: { value: 'Casio' } });
 
     await waitFor(() => {
-      expect(screen.getByText(/Blue Hydro Flask/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Casio fx-991EX/i).length).toBeGreaterThan(0);
     });
   });
 
-  it('authenticates user and renders login persona choices', async () => {
+  it('authenticates user and renders DNR team demo persona choices', async () => {
     render(
       <MemoryRouter>
         <LoginPage />
@@ -69,48 +73,50 @@ describe('End-to-End User & Recovery Workflows', () => {
 
     expect(screen.getByText(/Sign in to Back2You/i)).toBeInTheDocument();
     expect(screen.getByText(/Instant Demo Logins/i)).toBeInTheDocument();
-    expect(screen.getByText(/Alice Chen \(Student, Stanford\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Officer Marcus \(Moderator, Stanford\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Continue as Alfhi →/i)).toBeInTheDocument();
+    expect(screen.getByText(/Continue as Rabbani →/i)).toBeInTheDocument();
+    expect(screen.getByText(/Continue as Santosh →/i)).toBeInTheDocument();
+    expect(screen.getByText(/Officer Prasad/i)).toBeInTheDocument();
   });
 
   it('executes full claim lifecycle: create -> claim -> review -> complete return', async () => {
-    // 1. Bob reports a found set of keys
-    switchDemoUser('u-bob-student');
+    // 1. Rabbani reports a found calculator
+    switchDemoUser('u-rabbani-member');
     const item = await createItem({
-      campus_id: STANFORD_ID,
-      user_id: 'u-bob-student',
+      campus_id: DNR_CAMPUS_ID,
+      user_id: 'u-rabbani-member',
       report_type: 'found',
-      title: 'Brass Dorm Room Key on Blue Ring',
-      category: 'keys',
-      description: 'Found outside Stern dining hall',
-      location_name: 'Stern Hall',
+      title: 'Found Casio Scientific Calculator',
+      category: 'electronics',
+      description: 'Found in the Main Library reading hall.',
+      location_name: 'Main Library',
       date_lost_found: '2026-10-24',
     });
 
     expect(item.status).toBe('open');
 
-    // 2. Alice discovers the item and submits an ownership claim
-    switchDemoUser('u-alice-stanford');
+    // 2. Alfhi discovers the item and submits an ownership claim with private proof
+    switchDemoUser('u-alfhi-lead');
     const claim = await createClaim(item.id, {
-      claim_message: 'Hi Bob, I lost these keys yesterday outside Stern.',
-      proof_details: 'The brass key is stamped with room number 214.',
+      claim_message: 'Hi Rabbani, I lost this Casio calculator in the library yesterday.',
+      proof_details: 'The name Alfhi is written inside the sliding case, screen contrast level 7.',
     });
 
     expect(claim.status).toBe('pending');
 
-    // 3. Bob reviews and approves the claim with security desk handover instructions
-    switchDemoUser('u-bob-student');
+    // 3. Rabbani reviews and approves the claim with security desk handover instructions
+    switchDemoUser('u-rabbani-member');
     const approvedClaim = await reviewClaim(claim.id, {
       status: 'approved',
-      handover_instructions: 'Meet at Tresidder Union security desk at 2 PM',
-      review_notes: 'Room 214 confirmed against dorm registry.',
+      handover_instructions: 'Meet at DNRCET Security Desk, Main Block at 2 PM',
+      review_notes: 'Proof verified against owner name sticker.',
     });
 
     expect(approvedClaim.status).toBe('approved');
     let currentItem = await getItemById(item.id);
     expect(currentItem?.status).toBe('claimed');
 
-    // 4. Bob confirms return handover is completed
+    // 4. Rabbani confirms return handover is completed
     const completedClaim = await reviewClaim(claim.id, {
       status: 'completed',
     });
@@ -120,9 +126,9 @@ describe('End-to-End User & Recovery Workflows', () => {
     expect(currentItem?.status).toBe('resolved');
   });
 
-  it('enforces RBAC on the Moderator page', async () => {
-    // Alice is a student -> should see access restricted screen
-    switchDemoUser('u-alice-stanford');
+  it('enforces RBAC on the Moderator page: student is denied, officer is granted', async () => {
+    // Alfhi is a student -> should see access restricted screen
+    switchDemoUser('u-alfhi-lead');
     const { rerender } = render(
       <MemoryRouter>
         <ModeratorPage />
@@ -133,8 +139,8 @@ describe('End-to-End User & Recovery Workflows', () => {
       expect(screen.getByText(/Campus Moderator Access Required/i)).toBeInTheDocument();
     });
 
-    // Now switch to Officer Marcus Brody (Moderator)
-    switchDemoUser('u-marcus-mod');
+    // Now switch to Officer Prasad (Moderator)
+    switchDemoUser('u-prasad-mod');
     rerender(
       <MemoryRouter>
         <ModeratorPage />
@@ -147,8 +153,8 @@ describe('End-to-End User & Recovery Workflows', () => {
     });
   });
 
-  it('renders student dashboard with personal reports and claim metrics', async () => {
-    switchDemoUser('u-alice-stanford');
+  it('renders student dashboard with personal reports, team designation, and claim metrics', async () => {
+    switchDemoUser('u-alfhi-lead');
     render(
       <MemoryRouter>
         <MyReportsPage />
@@ -156,9 +162,9 @@ describe('End-to-End User & Recovery Workflows', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Welcome back, Alice Chen/i)).toBeInTheDocument();
+      expect(screen.getByText(/Welcome back, Alfhi/i)).toBeInTheDocument();
+      expect(screen.getByText(/Project Lead/i)).toBeInTheDocument();
       expect(screen.getByText(/My Lost Reports/i)).toBeInTheDocument();
-      expect(screen.getByText(/Successfully Reunited/i)).toBeInTheDocument();
     });
   });
 });

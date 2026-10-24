@@ -29,6 +29,8 @@ import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
 import { Input, Textarea } from '../components/ui/Input';
 import { CATEGORY_LABELS } from '../lib/validation';
+import { formatDate } from '../lib/formatters';
+import { CAMPUS_CONFIG } from '../lib/constants';
 import confetti from 'canvas-confetti';
 
 export const ItemDetailPage: React.FC = () => {
@@ -52,8 +54,8 @@ export const ItemDetailPage: React.FC = () => {
   const [selectedClaimToReview, setSelectedClaimToReview] = useState<Claim | null>(null);
   const [reviewStatus, setReviewStatus] = useState<'approved' | 'rejected' | 'completed'>('approved');
   const [reviewNotes, setReviewNotes] = useState('');
-  const [handoverLocation, setHandoverLocation] = useState(
-    'Campus Security Office, Student Union Bldg A, Rm 104'
+  const [handoverLocation, setHandoverLocation] = useState<string>(
+    CAMPUS_CONFIG.securityOfficeLocation
   );
 
   // Abuse Report Modal
@@ -258,7 +260,7 @@ export const ItemDetailPage: React.FC = () => {
                 <div className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-[#7C938C]" />
                   <span>
-                    {item.report_type === 'lost' ? 'Lost on' : 'Found on'} {item.date_lost_found}
+                    {item.report_type === 'lost' ? 'Lost on' : 'Found on'} {formatDate(item.date_lost_found)}
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">

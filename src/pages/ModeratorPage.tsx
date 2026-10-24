@@ -115,7 +115,7 @@ export const ModeratorPage: React.FC = () => {
           You are currently signed in as <strong>{currentUser.full_name}</strong> with the <em>Student</em> role. Moderator tools are restricted to verified campus safety personnel and administrators.
         </p>
         <div className="mt-6 p-4 bg-[#FAF9F6] rounded-xl border border-[#CBD5CE] text-xs text-[#536B63]">
-          💡 <strong>Judges / Evaluators:</strong> You can switch roles at any time using the <em>"Test Role"</em> dropdown in the top evaluation bar (choose <em>Officer Marcus Brody (MODERATOR)</em>).
+          💡 <strong>Judges / Evaluators:</strong> You can switch roles at any time using the <em>"Test Role"</em> dropdown in the top evaluation bar (choose <em>Officer Prasad (MODERATOR)</em>).
         </div>
       </div>
     );

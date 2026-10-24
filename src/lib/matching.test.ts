@@ -14,13 +14,13 @@ import type { Item } from '../types';
 describe('Intelligent Matching Engine', () => {
   const baseLostItem: Item = {
     id: 'lost-1',
-    campus_id: 'campus-stanford',
-    user_id: 'user-alice',
+    campus_id: 'campus-dnr',
+    user_id: 'u-alfhi-lead',
     report_type: 'lost',
     title: 'Blue Hydro Flask water bottle',
     category: 'water_bottles',
     description: 'Lost my 32oz navy blue Hydro Flask with a National Parks sticker on it.',
-    location_name: 'Green Library 2nd Floor',
+    location_name: 'Main Library 2nd Floor',
     date_lost_found: '2026-10-20',
     color: 'blue',
     status: 'open',
@@ -29,13 +29,13 @@ describe('Intelligent Matching Engine', () => {
 
   const baseFoundItem: Item = {
     id: 'found-1',
-    campus_id: 'campus-stanford',
-    user_id: 'user-bob',
+    campus_id: 'campus-dnr',
+    user_id: 'u-rabbani-member',
     report_type: 'found',
     title: 'Found Hydro Flask bottle',
     category: 'water_bottles',
     description: 'Found a blue metallic water bottle with outdoors stickers on the study desk.',
-    location_name: 'Green Library 2nd Floor',
+    location_name: 'Main Library 2nd Floor',
     date_lost_found: '2026-10-21',
     color: 'blue',
     status: 'open',
@@ -124,7 +124,7 @@ describe('Intelligent Matching Engine', () => {
   it('finds and ranks potential matches from an item pool', () => {
     const unrelatedItem: Item = {
       id: 'found-2',
-      campus_id: 'campus-stanford',
+      campus_id: 'campus-dnr',
       user_id: 'user-carol',
       report_type: 'found',
       title: 'Found graphing calculator',

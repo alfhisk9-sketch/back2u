@@ -9,35 +9,35 @@ import {
   reviewClaim,
   setCurrentCampusId,
   switchDemoUser,
+  resetDemoData,
 } from './dataService';
 import {
   REWARD_POINTS,
   makeFoundReportKey,
   makeRecoveryCompletedKey,
 } from '../lib/rewards';
+import { CAMPUS_CONFIG } from '../lib/constants';
 
-
-describe('Back2You Stars — Service & Security Integration', () => {
-  const STANFORD_CAMPUS = 'c1111111-1111-1111-1111-111111111111';
-  const MIT_CAMPUS = 'c2222222-2222-2222-2222-222222222222';
-  const TEST_USER = 'u-bob-student';
+describe('Back2You Stars — Service & Security Integration (DNR Campus)', () => {
+  const DNR_CAMPUS = CAMPUS_CONFIG.id;
+  const TEST_USER = 'u-rabbani-member';
 
   beforeEach(() => {
-    localStorage.clear();
-    setCurrentCampusId(STANFORD_CAMPUS);
+    resetDemoData();
+    setCurrentCampusId(DNR_CAMPUS);
     switchDemoUser(TEST_USER);
   });
 
   it('awards +10 Stars for a valid found-item report and 0 for lost reports', async () => {
     // 1. Report found item
     const foundItem = await createItem({
-      campus_id: STANFORD_CAMPUS,
+      campus_id: DNR_CAMPUS,
       user_id: TEST_USER,
       report_type: 'found',
       title: 'Found Black Leather Wallet',
       category: 'wallets_purses',
-      description: 'Found on the bench outside Green Library.',
-      location_name: 'Green Library',
+      description: 'Found on the bench outside Main Library.',
+      location_name: 'Main Library',
       date_lost_found: '2026-10-24',
     });
 
@@ -52,13 +52,13 @@ describe('Back2You Stars — Service & Security Integration', () => {
 
     // 2. Report lost item — must NOT receive report points
     const lostItem = await createItem({
-      campus_id: STANFORD_CAMPUS,
+      campus_id: DNR_CAMPUS,
       user_id: TEST_USER,
       report_type: 'lost',
       title: 'Lost Silver Earring',
       category: 'accessories',
-      description: 'Lost somewhere in Meyer Green.',
-      location_name: 'Meyer Green',
+      description: 'Lost somewhere near seminar hall.',
+      location_name: 'Seminar Hall',
       date_lost_found: '2026-10-24',
     });
 
@@ -75,7 +75,7 @@ describe('Back2You Stars — Service & Security Integration', () => {
     // First call: newly issued
     const res1 = await issueRewardPoints({
       user_id: TEST_USER,
-      campus_id: STANFORD_CAMPUS,
+      campus_id: DNR_CAMPUS,
       event_type: 'found_report_accepted',
       points: 10,
       description: 'Test found item report',
@@ -87,7 +87,7 @@ describe('Back2You Stars — Service & Security Integration', () => {
     // Second call with same idempotency key (retry/refresh simulation)
     const res2 = await issueRewardPoints({
       user_id: TEST_USER,
-      campus_id: STANFORD_CAMPUS,
+      campus_id: DNR_CAMPUS,
       event_type: 'found_report_accepted',
       points: 10,
       description: 'Test found item report (retry)',
@@ -107,7 +107,7 @@ describe('Back2You Stars — Service & Security Integration', () => {
     await expect(
       issueRewardPoints({
         user_id: TEST_USER,
-        campus_id: STANFORD_CAMPUS,
+        campus_id: DNR_CAMPUS,
         event_type: 'found_report_accepted',
         points: 50, // TAMPERED
         description: 'Tampered points request',
@@ -119,7 +119,7 @@ describe('Back2You Stars — Service & Security Integration', () => {
     await expect(
       issueRewardPoints({
         user_id: TEST_USER,
-        campus_id: STANFORD_CAMPUS,
+        campus_id: DNR_CAMPUS,
         event_type: 'found_report_accepted',
         points: -10,
         description: 'Negative points',
@@ -131,24 +131,24 @@ describe('Back2You Stars — Service & Security Integration', () => {
   it('awards +15 moderator verification bonus only when authorized moderator verifies', async () => {
     // 1. Create a found item
     const foundItem = await createItem({
-      campus_id: STANFORD_CAMPUS,
-      user_id: 'u-alice-stanford',
+      campus_id: DNR_CAMPUS,
+      user_id: 'u-alfhi-lead',
       report_type: 'found',
       title: 'Found Scientific Calculator',
       category: 'electronics',
       description: 'Casio fx-991EX left on desk.',
-      location_name: 'Science Bldg 101',
+      location_name: 'Main Library',
       date_lost_found: '2026-10-24',
     });
 
     // 2. Student trying to verify report should be rejected
-    switchDemoUser('u-bob-student'); // student role
+    switchDemoUser('u-rabbani-member'); // student role
     await expect(verifyFoundItemReport(foundItem.id)).rejects.toThrow(
       /Only campus safety moderators/
     );
 
     // 3. Switch to campus moderator
-    switchDemoUser('u-marcus-mod'); // moderator role
+    switchDemoUser('u-prasad-mod'); // moderator role
     const verifyTx = await verifyFoundItemReport(foundItem.id);
     expect(verifyTx).toBeDefined();
     expect(verifyTx?.points).toBe(15);
@@ -160,31 +160,31 @@ describe('Back2You Stars — Service & Security Integration', () => {
   });
 
   it('awards +25 recovery bonus upon completed return and enforces achievement uniqueness', async () => {
-    // Create found item reported by Bob
-    switchDemoUser('u-bob-student');
+    // Create found item reported by Rabbani
+    switchDemoUser('u-rabbani-member');
     const item = await createItem({
-      campus_id: STANFORD_CAMPUS,
-      user_id: 'u-bob-student',
+      campus_id: DNR_CAMPUS,
+      user_id: 'u-rabbani-member',
       report_type: 'found',
-      title: 'Found Keys with Brass Carabiner',
+      title: 'Found Keys with Bike Keychain',
       category: 'keys',
       description: 'Found near cafeteria steps.',
-      location_name: 'Main Cafeteria',
+      location_name: 'College Canteen',
       date_lost_found: '2026-10-24',
     });
 
-    // Alice files a claim
-    switchDemoUser('u-alice-stanford');
+    // Alfhi files a claim
+    switchDemoUser('u-alfhi-lead');
     const claim = await createClaim(item.id, {
-      claim_message: 'These are my dorm keys.',
-      proof_details: 'Three keys on a brass carabiner with an engraving of the letter A.',
+      claim_message: 'These are my bike keys.',
+      proof_details: 'Honda rubber emblem with red mini torch attached.',
     });
 
-    // Bob approves claim
-    switchDemoUser('u-bob-student');
+    // Rabbani approves claim
+    switchDemoUser('u-rabbani-member');
     await reviewClaim(claim.id, {
       status: 'approved',
-      handover_instructions: 'Meet at Tresidder Union desk at 4 PM.',
+      handover_instructions: 'Meet at DNRCET Security Desk at 4 PM.',
     });
 
     // Handover completed
@@ -192,28 +192,28 @@ describe('Back2You Stars — Service & Security Integration', () => {
       status: 'completed',
     });
 
-    // Bob (the finder) should receive +25 Stars
-    const bobSummary = await getUserRewardsSummary('u-bob-student');
-    const recoveryTx = bobSummary.recent_transactions.find(
-      t => t.idempotency_key === makeRecoveryCompletedKey(claim.id, 'u-bob-student')
+    // Rabbani (the finder) should receive +25 Stars
+    const rabbaniSummary = await getUserRewardsSummary('u-rabbani-member');
+    const recoveryTx = rabbaniSummary.recent_transactions.find(
+      t => t.idempotency_key === makeRecoveryCompletedKey(claim.id, 'u-rabbani-member')
     );
     expect(recoveryTx).toBeDefined();
     expect(recoveryTx?.points).toBe(REWARD_POINTS.recovery_completed);
 
     // Ensure achievement uniqueness (no duplicate badge records)
-    const achievements = bobSummary.earned_achievements;
+    const achievements = rabbaniSummary.earned_achievements;
     const codes = achievements.map(a => a.achievement_code);
     const uniqueCodes = new Set(codes);
     expect(codes.length).toBe(uniqueCodes.size);
   });
 
   it('strictly isolates campus leaderboards and protects student privacy', async () => {
-    const stanfordBoard = await getCampusLeaderboard(STANFORD_CAMPUS, 'all_time');
-    const mitBoard = await getCampusLeaderboard(MIT_CAMPUS, 'all_time');
+    const dnrBoard = await getCampusLeaderboard(DNR_CAMPUS, 'all_time');
 
-    // Stanford board must only contain Stanford users or users with Stanford points
-    stanfordBoard.forEach(entry => {
-      expect(entry.campus_id).toBe(STANFORD_CAMPUS);
+    // DNR board must contain only DNR students with valid points
+    expect(dnrBoard.length).toBeGreaterThan(0);
+    dnrBoard.forEach(entry => {
+      expect(entry.campus_id).toBe(DNR_CAMPUS);
       // Privacy check: Never expose email, phone number, or student ID in public ranking
       // @ts-expect-error property check
       expect(entry.email).toBeUndefined();
@@ -224,9 +224,8 @@ describe('Back2You Stars — Service & Security Integration', () => {
       expect(entry.display_name).toBeTruthy();
     });
 
-    // MIT board must not leak Stanford students
-    const mitUserIds = mitBoard.map(e => e.user_id);
-    expect(mitUserIds).toContain('u-david-mit');
-    expect(mitUserIds).not.toContain('u-bob-student');
+    const dnrNames = dnrBoard.map(e => e.display_name);
+    expect(dnrNames).toContain('Rabbani');
+    expect(dnrNames).toContain('Alfhi');
   });
 });

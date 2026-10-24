@@ -1,104 +1,136 @@
-# Back2You — Campus Lost & Found Platform
+# Back2You — DNR Campus Recovery
 
-> **Lost something? Let's bring it back to you.**
-
-Back2You is a modern, production-grade multi-campus lost-and-found platform designed to replace informal chat groups and physical notice boards with a secure, centralized recovery workflow.
-
-Built with **React 19**, **TypeScript**, **Tailwind CSS**, and **Supabase (PostgreSQL, Row Level Security, Auth, Storage)**.
+> **Lost something? Let's bring it back to you.**  
+> The official lost-and-found recovery platform tailored for **DNR College of Engineering & Technology (DNRCET)**, Bhimavaram, Andhra Pradesh, India.  
+> Official College Website: [https://dnrcet.org/](https://dnrcet.org/)
 
 ---
 
-## Key Features
+## 1. Overview & Campus Customization
 
-1. **Intelligent Explainable Matching Engine (100-Point Normalized Model)**
-   - Category similarity (30 pts)
-   - Keyword & description token overlap (25 pts)
-   - Campus location similarity (20 pts)
-   - Date proximity decay (15 pts)
-   - Color similarity (10 pts)
-   - Human-readable breakdown explaining why two items match.
+Back2You replaces chaotic social media channels and physical notice boards with a secure, explainable recovery workflow. Built with **React 19**, **TypeScript**, **Tailwind CSS**, and **Supabase (PostgreSQL, Row Level Security, Auth, Storage)**.
 
-2. **Secure Multi-Campus Isolation & RLS**
-   - Strictly scopes lost/found listings, claims, and search results to the student's authorized campus.
-   - Prevents unauthorized cross-campus reads or data leakage.
-
-3. **Complete Item Recovery Lifecycle**
-   - Report Lost & Report Found with category selection, date picker, photo upload, and privacy protections.
-   - Separation of public descriptions from private ownership verification clues (e.g. engravings, wallpaper, hidden contents).
-   - Private claim submission and review workflow.
-   - Safe handover location guidance (e.g., Campus Security Office, Student Union).
-   - Return confirmation with automated resolution and celebratory UI.
-
-4. **Role-Based Access Control (RBAC)**
-   - **Student:** Report, search, claim, receive match suggestions, and manage personal reports.
-   - **Moderator:** Campus-scoped moderation, review reported listings, inspect abuse flags, resolve disputes.
-   - **Platform Admin:** Multi-campus registry, role assignments, platform audit logs, and metrics.
-
-5. **In-App Notification Center**
-   - High-score match alerts, claim status updates, and return notifications.
-
-6. **Back2You Stars — Contribution Rewards & Campus Leaderboard**
-   - **Stars Reward Ledger:** Verified points for valid found reports (+10★), moderator verification (+15★), and completed returns (+25★).
-   - **Idempotency Protection:** Database-enforced idempotency key prevents duplicate reward issuance on retries or page reloads.
-   - **Milestone Badges:** Unlocks *First Finder*, *Bronze/Silver/Gold Helper*, *Campus Hero*, *Recovery Champion*, and *Trusted Contributor*.
-   - **Campus Leaderboard:** Weekly, Monthly, and All-Time rankings with strict student privacy (names/avatars only; no emails or student IDs exposed).
-   - **Student Dashboard Integration:** Embedded summary widget tracking real-time Star balances, tier progress, and active milestones.
-
-7. **Dual Mode Architecture**
-   - **Live Supabase Mode:** Full persistence with PostgreSQL, Auth, and Storage.
-   - **Interactive Demo / Offline Mode:** Instant local evaluation with rich realistic seed data for hackathon judges, administrators, and testing.
-
+### DNR Campus Parameters
+- **Institution:** DNR College of Engineering & Technology (DNRCET)
+- **Short Campus Label:** DNR Engineering College
+- **Campus Code:** `DNR-BVRM`
+- **Location:** Bhimavaram, Andhra Pradesh, India
+- **Timezone:** Asia/Kolkata (IST)
+- **Currency:** INR (₹)
+- **Date Format:** `DD MMM YYYY` (e.g., `24 Oct 2026`)
+- **Default Security Desk:** Administrative Office & Security Help Desk, Main Block, DNRCET Campus
 
 ---
 
-## Tech Stack
+## 2. Team Demo Accounts
 
-- **Frontend:** React 19, TypeScript (strict), Vite, Tailwind CSS, Lucide React
-- **Forms & Validation:** React Hook Form, Zod
-- **Data & State:** TanStack React Query, Supabase Client
-- **Database:** Supabase PostgreSQL with Row Level Security (RLS)
-- **Testing:** Vitest, React Testing Library
-- **Deployment:** Netlify & Vercel ready
+The application includes three dedicated student demo identities and a security desk moderator:
+
+| Demo Persona | Role | Designation | Avatar | Demo Email | Campus |
+|---|---|---|---|---|---|
+| **Alfhi** | Student | Project Lead | `AF` | `alfhi.demo@back2you.test` | DNR College of Engineering & Technology |
+| **Rabbani** | Student | Team Member | `RA` | `rabbani.demo@back2you.test` | DNR College of Engineering & Technology |
+| **Santosh** | Student | Team Member | `SA` | `santosh.demo@back2you.test` | DNR College of Engineering & Technology |
+| **Officer Prasad** | Moderator | Security Help Desk | `OP` | `security.desk@dnrcet.org` | DNR College of Engineering & Technology |
+
+> **Note:** All three team demo accounts (`Alfhi`, `Rabbani`, `Santosh`) are strictly regular students with zero moderator/admin privileges. Moderator testing is isolated to `Officer Prasad` at the Campus Security Desk.
 
 ---
 
-## Getting Started
+## 3. Demo Account Selector & DevBar
 
-### 1. Clone & Install
+- When in evaluation/demo mode, a persistent top navigation bar displays a prominent **"DEMO MODE"** badge.
+- Quick buttons allow instant persona switching:
+  - **Continue as Alfhi (Project Lead)**
+  - **Continue as Rabbani (Team Member)**
+  - **Continue as Santosh (Team Member)**
+  - Dropdown options for **Officer Prasad (Moderator)**
+- Persona switching isolates private data: switching users updates the dashboard, reports, claims, and Stars while strictly hiding unreviewed ownership proof details from non-owners.
+
+---
+
+## 4. Realistic DNR Campus Demo Data
+
+The demo environment features 15 realistic lost-and-found records distributed across 10 DNR campus locations:
+1. **Main Library** (e.g., Casio fx-991EX Scientific Calculator, Sony Over-Ear Headphones)
+2. **Computer Science Laboratory** (e.g., Wildcraft Laptop Backpack, Data Structures Lab Record Book, SanDisk USB Drive)
+3. **Electronics Laboratory** (e.g., HP 65W Blue-Pin Laptop Adapter)
+4. **College Canteen** (e.g., DNRCET Student ID Card with Green Lanyard)
+5. **Seminar Hall** (e.g., boAt Airdopes 141 Wireless Earbuds)
+6. **Main Entrance** (e.g., Black Windproof Folding Umbrella)
+7. **Parking Area** (e.g., Bike Key with Honda Keychain & Mini Torch)
+8. **Classroom Block** (e.g., Milton Stainless Steel Water Bottle 1000ml)
+9. **College Bus Area** (e.g., Brown Leather Bi-fold Wallet with Bus Pass)
+10. **Sports Ground** (e.g., Yonex Badminton Racket with Full Cover)
+
+### Interactive Demo Scenario
+1. **Alfhi** reports a lost *Casio fx-991EX Scientific Calculator* in the Main Library.
+2. **Rabbani** reports finding a *Casio fx-991EX Calculator* in the Main Library reading hall.
+3. The **Intelligent Matching Engine** scores the pair at **94.5% compatibility** with a full explainable breakdown.
+4. **Alfhi** submits an ownership claim with confidential proof (handwritten name sticker inside cover and screen contrast setting).
+5. **Rabbani** (or **Officer Prasad**) reviews and approves the claim with handover instructions at the *Main Block Security Desk*.
+6. The item is marked as completed/reunited, awarding **+25 Stars** to Rabbani.
+
+---
+
+## 5. Back2You Stars & Rewards
+
+- **Found Report Accepted:** +10 Stars
+- **Moderator Verification:** +15 Stars
+- **Completed Return Recovery:** +25 Stars
+- **Idempotency Protection:** Database and service-level idempotency prevents duplicate points on retries or page refreshes.
+- **Milestone Badges:** *First Finder*, *Bronze Helper*, *Silver Helper*, *Gold Helper*, *Campus Hero*.
+- **Campus Leaderboard:** Real-time ranking of top campus helpers (Rabbani, Alfhi, Santosh) with student privacy protection (no emails or roll numbers leaked).
+
+---
+
+## 6. How to Run & Verify
+
+### Interactive Demo Mode (Local & Evaluation)
+1. Clone the repository and install dependencies:
+   ```bash
+   git clone https://github.com/alfhisk9-sketch/back2u.git
+   cd back2u
+   npm install
+   ```
+2. Start the development server (runs with local seed data by default):
+   ```bash
+   npm run dev
+   ```
+3. Open `http://localhost:5173`. Use the top DevBar or Login screen to switch between **Alfhi**, **Rabbani**, and **Santosh**.
+
+### Live Supabase Mode
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Configure your Supabase project credentials:
+   ```env
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   VITE_DEMO_MODE=false
+   ```
+3. Apply migrations in order via the Supabase SQL Editor:
+   - `supabase/migrations/20261024000001_init_schema.sql` (Core schema & RLS)
+   - `supabase/migrations/20261024000002_rewards_schema.sql` (Back2You Stars & Leaderboard)
+   - `supabase/migrations/20261024000003_dnr_campus_seed.sql` (DNR College configuration)
+4. (Optional) Run `supabase/seed.sql` to populate sample campus records.
+
+---
+
+## 7. Automated Testing & Verification
+
+Run the comprehensive test suite (all 51 tests):
 ```bash
-git clone https://github.com/your-username/back2you.git
-cd back2you
-npm install
+npm test
 ```
 
-### 2. Environment Setup
-Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
-To run against real Supabase:
-- Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
-- Run migrations located in `supabase/migrations/20261024000001_init_schema.sql` inside your Supabase SQL editor.
-
-To run locally in **Interactive Demo Mode** (zero config required):
-- Leave keys empty or set `VITE_DEMO_MODE=true`.
-
-### 3. Run Development Server
-```bash
-npm run dev
-```
-
-### 4. Run Tests
-```bash
-npm run test
-```
-
-### 5. Build for Production
+Build the production bundle:
 ```bash
 npm run build
 ```
 
 ---
 
-## License
-MIT
+## 8. License
+MIT License. Developed for DNR College of Engineering & Technology (DNRCET), Bhimavaram.

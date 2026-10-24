@@ -11,10 +11,10 @@ describe('Validation Schemas (Zod)', () => {
   it('validates a correct lost report payload', () => {
     const validData = {
       report_type: 'lost' as const,
-      title: 'Stanford ID Card',
+      title: 'DNRCET Student ID Card',
       category: 'identity_cards' as const,
       description: 'Lost near student union patio with lanyard.',
-      location_name: 'Tresidder Union',
+      location_name: 'Main Library',
       date_lost_found: '2026-10-24',
       is_sensitive: true,
       color: 'red',
@@ -63,13 +63,13 @@ describe('Validation Schemas (Zod)', () => {
   });
 
   it('validates authentication credentials', () => {
-    expect(loginSchema.safeParse({ email: 'test@stanford.edu', password: 'password123' }).success).toBe(true);
+    expect(loginSchema.safeParse({ email: 'alfhi.demo@back2you.test', password: 'password123' }).success).toBe(true);
     expect(loginSchema.safeParse({ email: 'invalid-email', password: '123' }).success).toBe(false);
 
     expect(
       registerSchema.safeParse({
-        full_name: 'Alice Chen',
-        email: 'alice@stanford.edu',
+        full_name: 'Alfhi',
+        email: 'alfhi@dnrcet.org',
         password: 'securepass123',
         campus_id: 'campus-1',
       }).success

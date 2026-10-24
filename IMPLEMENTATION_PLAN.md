@@ -71,7 +71,7 @@
   - Location similarity: 20 pts
   - Date proximity decay: 15 pts
   - Color similarity: 10 pts
-- Match explanation generator (e.g. "92% Match: Exact category match, 1 day apart, matched keywords: Blue, Leather, Stanford Student ID").
+- Match explanation generator (e.g. "92% Match: Exact category match, 1 day apart, matched keywords: Blue, Leather, DNRCET Student ID").
 - Dismiss irrelevant suggestions, mark as claimed, and trigger notifications on high-scoring matches.
 
 ### Phase 6: Claims & Recovery Workflow

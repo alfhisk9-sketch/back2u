@@ -8,7 +8,7 @@ describe('Back2You Stars — Rewards Dashboard UI', () => {
   beforeEach(() => {
     localStorage.clear();
     setCurrentCampusId('c1111111-1111-1111-1111-111111111111');
-    switchDemoUser('u-bob-student');
+    switchDemoUser('u-rabbani-member');
   });
 
   it('renders star balance, achievement level, and milestone badges', async () => {

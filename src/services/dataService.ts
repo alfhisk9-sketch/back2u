@@ -45,20 +45,20 @@ import {
   type AuthoritativeUserMetrics,
 } from '../lib/rewards';
 
-// Local storage keys for persistent demo/offline mode
+// Local storage keys for persistent demo/offline mode (namespaced for DNR Campus)
 const STORAGE_KEYS = {
-  CURRENT_USER_ID: 'back2you_curr_user_id',
-  CURRENT_CAMPUS_ID: 'back2you_curr_campus_id',
-  ITEMS: 'back2you_items',
-  CLAIMS: 'back2you_claims',
-  MATCHES: 'back2you_matches',
-  NOTIFICATIONS: 'back2you_notifs',
-  ABUSE_REPORTS: 'back2you_abuse',
-  AUDIT_LOGS: 'back2you_audits',
-  PROFILES: 'back2you_profiles',
-  CAMPUSES: 'back2you_campuses',
-  REWARD_TRANSACTIONS: 'back2you_reward_txs',
-  USER_ACHIEVEMENTS: 'back2you_user_achievements',
+  CURRENT_USER_ID: 'back2you_dnr_curr_user_id',
+  CURRENT_CAMPUS_ID: 'back2you_dnr_curr_campus_id',
+  ITEMS: 'back2you_dnr_items',
+  CLAIMS: 'back2you_dnr_claims',
+  MATCHES: 'back2you_dnr_matches',
+  NOTIFICATIONS: 'back2you_dnr_notifs',
+  ABUSE_REPORTS: 'back2you_dnr_abuse',
+  AUDIT_LOGS: 'back2you_dnr_audits',
+  PROFILES: 'back2you_dnr_profiles',
+  CAMPUSES: 'back2you_dnr_campuses',
+  REWARD_TRANSACTIONS: 'back2you_dnr_reward_txs',
+  USER_ACHIEVEMENTS: 'back2you_dnr_user_achievements',
 };
 
 function loadFromStorage<T>(key: string, defaultVal: T): T {
@@ -80,7 +80,7 @@ function saveToStorage<T>(key: string, val: T): void {
 
 // In-memory / localStorage cache state
 let campuses: Campus[] = loadFromStorage(STORAGE_KEYS.CAMPUSES, SEED_CAMPUSES);
-const profiles: Profile[] = loadFromStorage(STORAGE_KEYS.PROFILES, DEMO_USERS);
+let profiles: Profile[] = loadFromStorage(STORAGE_KEYS.PROFILES, DEMO_USERS);
 let items: Item[] = loadFromStorage(STORAGE_KEYS.ITEMS, SEED_ITEMS);
 let claims: Claim[] = loadFromStorage(STORAGE_KEYS.CLAIMS, SEED_CLAIMS);
 let matches: MatchRecord[] = loadFromStorage(STORAGE_KEYS.MATCHES, SEED_MATCHES);
@@ -96,9 +96,33 @@ let userAchievements: UserAchievement[] = loadFromStorage(
   SEED_USER_ACHIEVEMENTS
 );
 
-
 let currentUserId: string = loadFromStorage(STORAGE_KEYS.CURRENT_USER_ID, DEMO_USERS[0].id);
 let currentCampusId: string = loadFromStorage(STORAGE_KEYS.CURRENT_CAMPUS_ID, SEED_CAMPUSES[0].id);
+
+export function resetDemoData(): void {
+  campuses = [...SEED_CAMPUSES];
+  profiles = [...DEMO_USERS];
+  items = [...SEED_ITEMS];
+  claims = [...SEED_CLAIMS];
+  matches = [...SEED_MATCHES];
+  notifications = [...SEED_NOTIFICATIONS];
+  abuseReports = [];
+  auditLogs = [...SEED_AUDIT_LOGS];
+  rewardTransactions = [...SEED_REWARD_TRANSACTIONS];
+  userAchievements = [...SEED_USER_ACHIEVEMENTS];
+  currentUserId = DEMO_USERS[0].id;
+  currentCampusId = SEED_CAMPUSES[0].id;
+
+  Object.values(STORAGE_KEYS).forEach(k => {
+    try {
+      localStorage.removeItem(k);
+    } catch {
+      // ignore in test or restricted environments
+    }
+  });
+
+  notifySubscribers();
+}
 
 // Real-time auth listener when Supabase is active
 const activeSupabase = isSupabaseConfigured ? supabase : null;
@@ -522,21 +546,38 @@ export async function deleteItem(id: string): Promise<boolean> {
    ============================================================================= */
 
 export async function getClaimsForItem(itemId: string): Promise<Claim[]> {
+  const currentUser = await getCurrentUser();
+  const targetItem = items.find(i => i.id === itemId);
+  const isItemOwner = targetItem && targetItem.user_id === currentUser.id;
+  const isStaff = currentUser.role === 'moderator' || currentUser.role === 'admin';
+
   if (isSupabaseConfigured && supabase) {
     const { data, error } = await supabase
       .from('claims')
       .select('*, claimant:profiles(*), reviewer:profiles(*)')
       .eq('item_id', itemId);
-    if (!error && data) return data as Claim[];
+    if (!error && data) {
+      return (data as Claim[]).map(c => {
+        const canViewProof = isItemOwner || isStaff || c.claimant_id === currentUser.id;
+        return {
+          ...c,
+          proof_details: canViewProof ? c.proof_details : '[Protected Confidential Ownership Proof]',
+        };
+      });
+    }
   }
 
   const filtered = claims.filter(c => c.item_id === itemId);
-  return filtered.map(c => ({
-    ...c,
-    item: items.find(i => i.id === c.item_id),
-    claimant: profiles.find(p => p.id === c.claimant_id),
-    reviewer: profiles.find(p => p.id === c.reviewer_id),
-  }));
+  return filtered.map(c => {
+    const canViewProof = isItemOwner || isStaff || c.claimant_id === currentUser.id;
+    return {
+      ...c,
+      proof_details: canViewProof ? c.proof_details : '[Protected Confidential Ownership Proof]',
+      item: items.find(i => i.id === c.item_id),
+      claimant: profiles.find(p => p.id === c.claimant_id),
+      reviewer: profiles.find(p => p.id === c.reviewer_id),
+    };
+  });
 }
 
 export async function getMyClaims(userId: string): Promise<Claim[]> {

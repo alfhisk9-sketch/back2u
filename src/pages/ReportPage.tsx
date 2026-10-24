@@ -25,6 +25,7 @@ import {
   ITEM_CATEGORIES,
   CATEGORY_LABELS,
 } from '../lib/validation';
+import { DNR_CAMPUS_LOCATIONS } from '../lib/constants';
 import { Button } from '../components/ui/Button';
 import { Input, Textarea } from '../components/ui/Input';
 import { Modal } from '../components/ui/Modal';
@@ -270,7 +271,7 @@ export const ReportPage: React.FC = () => {
           <div>
             <Input
               label="Item Title"
-              placeholder="e.g. Stanford Student ID Card, Blue Hydro Flask 32oz"
+              placeholder="e.g. Casio fx-991EX Scientific Calculator, Student ID Card, Lab Record"
               {...register('title')}
               error={errors.title?.message}
             />
@@ -315,10 +316,16 @@ export const ReportPage: React.FC = () => {
           <div>
             <Input
               label={currentReportType === 'lost' ? 'Last Seen Location' : 'Found Location'}
-              placeholder="e.g. Green Library 2nd Floor, Tresidder Cafe"
+              placeholder="e.g. Main Library, College Canteen, CS Lab"
+              list="dnr-locations-list"
               {...register('location_name')}
               error={errors.location_name?.message}
             />
+            <datalist id="dnr-locations-list">
+              {DNR_CAMPUS_LOCATIONS.map(loc => (
+                <option key={loc} value={loc} />
+              ))}
+            </datalist>
           </div>
 
           <div>

@@ -127,37 +127,77 @@ export const LoginPage: React.FC = () => {
 
         {/* Fast Persona Switcher for Testing & Demonstration */}
         <div className="p-3.5 rounded-xl bg-[#FAF9F6] border border-[#CBD5CE] space-y-2.5">
-          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#12241E]">
-            <Sparkles className="w-3.5 h-3.5 text-[#059669]" />
-            <span>Instant Demo Logins (Zero Friction)</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#12241E]">
+              <Sparkles className="w-3.5 h-3.5 text-[#059669]" />
+              <span>Instant Demo Logins (Zero Friction)</span>
+            </div>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+              DEMO MODE
+            </span>
           </div>
           <p className="text-[11px] text-[#536B63]">
-            Click any test role to immediately test student reporting, moderator auditing, or administrator governance:
+            Select any team member or campus officer to test reports, claims, and Stars:
           </p>
           <div className="grid grid-cols-1 gap-1.5">
             <button
               type="button"
-              onClick={() => selectPersona('u-alice-stanford')}
-              className="text-left px-3 py-1.5 rounded-lg bg-white border border-[#CBD5CE] hover:border-[#059669] text-xs font-semibold text-[#12241E] flex items-center justify-between cursor-pointer"
+              onClick={() => selectPersona('u-alfhi-lead')}
+              className="text-left px-3 py-2 rounded-lg bg-white border border-[#CBD5CE] hover:border-[#059669] hover:bg-emerald-50/40 text-xs font-semibold text-[#12241E] flex items-center justify-between cursor-pointer transition-colors"
             >
-              <span>Alice Chen (Student, Stanford)</span>
-              <span className="text-[10px] text-[#059669] font-bold uppercase">Log In →</span>
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 rounded-full bg-emerald-700 text-white text-[10px] flex items-center justify-center font-bold">AF</span>
+                <div>
+                  <span className="block font-bold">Alfhi</span>
+                  <span className="text-[10px] text-[#536B63]">Student • Project Lead</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-[#059669] font-bold uppercase">Continue as Alfhi →</span>
             </button>
+
             <button
               type="button"
-              onClick={() => selectPersona('u-marcus-mod')}
-              className="text-left px-3 py-1.5 rounded-lg bg-white border border-[#CBD5CE] hover:border-amber-600 text-xs font-semibold text-amber-900 flex items-center justify-between cursor-pointer"
+              onClick={() => selectPersona('u-rabbani-member')}
+              className="text-left px-3 py-2 rounded-lg bg-white border border-[#CBD5CE] hover:border-[#059669] hover:bg-emerald-50/40 text-xs font-semibold text-[#12241E] flex items-center justify-between cursor-pointer transition-colors"
             >
-              <span>Officer Marcus (Moderator, Stanford)</span>
-              <span className="text-[10px] text-amber-700 font-bold uppercase">Log In →</span>
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center font-bold">RA</span>
+                <div>
+                  <span className="block font-bold">Rabbani</span>
+                  <span className="text-[10px] text-[#536B63]">Student • Team Member</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-[#059669] font-bold uppercase">Continue as Rabbani →</span>
             </button>
+
             <button
               type="button"
-              onClick={() => selectPersona('u-sarah-admin')}
-              className="text-left px-3 py-1.5 rounded-lg bg-white border border-[#CBD5CE] hover:border-purple-600 text-xs font-semibold text-purple-900 flex items-center justify-between cursor-pointer"
+              onClick={() => selectPersona('u-santosh-member')}
+              className="text-left px-3 py-2 rounded-lg bg-white border border-[#CBD5CE] hover:border-[#059669] hover:bg-emerald-50/40 text-xs font-semibold text-[#12241E] flex items-center justify-between cursor-pointer transition-colors"
             >
-              <span>Dr. Sarah Jenkins (Platform Admin)</span>
-              <span className="text-[10px] text-purple-700 font-bold uppercase">Log In →</span>
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 rounded-full bg-emerald-800 text-white text-[10px] flex items-center justify-center font-bold">SA</span>
+                <div>
+                  <span className="block font-bold">Santosh</span>
+                  <span className="text-[10px] text-[#536B63]">Student • Team Member</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-[#059669] font-bold uppercase">Continue as Santosh →</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => selectPersona('u-prasad-mod')}
+              className="text-left px-3 py-2 rounded-lg bg-white border border-[#CBD5CE] hover:border-amber-600 hover:bg-amber-50/40 text-xs font-semibold text-amber-950 flex items-center justify-between cursor-pointer transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 rounded-full bg-amber-700 text-white text-[10px] flex items-center justify-center font-bold">OP</span>
+                <div>
+                  <span className="block font-bold">Officer Prasad</span>
+                  <span className="text-[10px] text-amber-800">Campus Security Desk • Moderator</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-amber-700 font-bold uppercase">Log In as Moderator →</span>
             </button>
           </div>
         </div>
@@ -172,7 +212,7 @@ export const LoginPage: React.FC = () => {
                   leftIcon={<User className="w-4 h-4" />}
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
-                  placeholder="e.g. Alice Chen"
+                  placeholder="e.g. Alfhi"
                   required
                 />
               </div>
@@ -203,7 +243,7 @@ export const LoginPage: React.FC = () => {
               leftIcon={<Mail className="w-4 h-4" />}
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="e.g. student@stanford.edu"
+              placeholder="e.g. alfhi.demo@back2you.test"
               required
             />
           </div>

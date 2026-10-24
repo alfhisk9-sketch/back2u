@@ -115,9 +115,24 @@ export const Footer: React.FC = () => {
 
         {/* Bottom copyright & disclaimer */}
         <div className="border-t border-[#234237] pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#7C938C] gap-2">
-          <p>© {new Date().getFullYear()} Back2You Platform. Multi-Campus Lost & Found SaaS.</p>
-          <p className="text-neutral-400">
-            For emergencies or immediate theft reports, contact your local Campus Police or Public Safety department.
+          <div>
+            <p className="font-medium text-emerald-300">
+              © {new Date().getFullYear()} Back2You — DNR Campus Recovery
+            </p>
+            <p className="text-[#8EA59E] mt-0.5">
+              DNR College of Engineering & Technology (DNRCET), Bhimavaram, Andhra Pradesh, India.{' '}
+              <a
+                href="https://dnrcet.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-400 underline hover:text-emerald-300"
+              >
+                dnrcet.org
+              </a>
+            </p>
+          </div>
+          <p className="text-neutral-400 sm:text-right">
+            For urgent property disputes, visit the Security Help Desk, Main Administrative Block.
           </p>
         </div>
       </div>
@@ -131,10 +146,10 @@ export const Footer: React.FC = () => {
       >
         <div className="space-y-3 text-xs text-[#3C534B] leading-relaxed">
           <p>
-            <strong>1. Identification Card Privacy:</strong> When reporting lost student IDs, driver's licenses, or passports, full identification numbers are masked and hidden from public explore feeds.
+            <strong>1. Identification Card Privacy:</strong> When reporting lost student IDs, driver's licenses, or government cards, full identification numbers are masked and hidden from public explore feeds.
           </p>
           <p>
-            <strong>2. Private Ownership Clues:</strong> Specific verification details (e.g., engravings, passcode hints, lock screen photo descriptions) are strictly stored in private fields only accessible to authorized item reviewers and campus safety moderators.
+            <strong>2. Private Ownership Clues:</strong> Specific verification details (e.g., markings, roll number notes, passcode hints, lock screen descriptions) are strictly stored in private fields only accessible to authorized item reviewers and campus safety moderators.
           </p>
           <p>
             <strong>3. Campus Boundary Isolation:</strong> Records are strictly isolated by campus using PostgreSQL Row Level Security (RLS) policies to prevent cross-institution data leakage.
@@ -154,10 +169,10 @@ export const Footer: React.FC = () => {
       >
         <div className="space-y-3 text-xs text-[#3C534B] leading-relaxed">
           <p>
-            <strong>Community Honesty:</strong> Submitting fraudulent claims for items you do not own violates university honor codes and will result in campus account suspension and disciplinary referral.
+            <strong>Community Honesty:</strong> Submitting fraudulent claims for items you do not own violates the college student code of conduct and will result in campus account suspension and disciplinary referral.
           </p>
           <p>
-            <strong>Safe Handover Protocol:</strong> All exchanges must be conducted in supervised public university facilities, preferably the campus security lost property desk or student center information desk.
+            <strong>Safe Handover Protocol:</strong> All exchanges must be conducted in supervised public university facilities, preferably the DNRCET Main Block Security Desk or Department Office during college hours.
           </p>
           <p>
             <strong>No Commercial Solicitation:</strong> Back2You is strictly for non-commercial recovery of lost personal belongings.
@@ -177,10 +192,10 @@ export const Footer: React.FC = () => {
             <strong>Step 1: Verify Ownership via Private Clues</strong> — Always check the claimant's answer to distinguishing questions before agreeing to meet.
           </p>
           <p>
-            <strong>Step 2: Choose a Supervised Campus Location</strong> — We recommend meeting at your campus security office, campus library circulation desk, or student union information desk during daylight hours.
+            <strong>Step 2: Choose a Supervised Campus Location</strong> — We recommend meeting at the DNRCET Security Desk (Main Block), Central Library Circulation Desk, or College Canteen Entrance during daytime hours.
           </p>
           <p>
-            <strong>Step 3: Confirm the Return in Back2You</strong> — Once the item has been returned to its rightful owner, mark the claim as "Completed" to auto-resolve the listing.
+            <strong>Step 3: Confirm the Return in Back2You</strong> — Once the item has been returned to its rightful owner, mark the claim as "Completed" to award community recovery Stars.
           </p>
         </div>
       </Modal>
@@ -190,16 +205,26 @@ export const Footer: React.FC = () => {
         isOpen={activeModal === 'contact'}
         onClose={() => setActiveModal(null)}
         title="Contact Campus Support"
-        description="Reach out to your campus coordinator"
+        description="Reach out to your campus lost and found coordinator"
       >
         <div className="space-y-3 text-xs text-[#3C534B] leading-relaxed">
           <p>
-            If you need assistance with an item dispute or suspect fraudulent activity, contact your campus lost and found administrator:
+            If you need assistance with an item dispute or suspect fraudulent activity, contact the campus recovery coordinator:
           </p>
           <div className="p-3 bg-[#E7EFEA] rounded-lg border border-[#CBD5CE]">
-            <p className="font-semibold text-[#12241E]">Campus Safety Coordination Office</p>
-            <p className="text-neutral-600">Email: support@back2you.campus</p>
-            <p className="text-neutral-600">Hours: Monday – Friday, 8:00 AM – 5:00 PM</p>
+            <p className="font-semibold text-[#12241E]">
+              DNR College of Engineering & Technology — Security & Student Services Desk
+            </p>
+            <p className="text-neutral-600 mt-1">Location: Administrative Office & Security Help Desk, Main Block, DNRCET Campus</p>
+            <p className="text-neutral-600">City: Bhimavaram, Andhra Pradesh, India</p>
+            <p className="text-neutral-600">Email: lostfound@dnrcet.org</p>
+            <p className="text-neutral-600">Hours: Monday – Saturday, 9:00 AM – 5:00 PM IST</p>
+            <p className="text-neutral-600 mt-1">
+              Official Website:{' '}
+              <a href="https://dnrcet.org/" target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline font-medium">
+                https://dnrcet.org/
+              </a>
+            </p>
           </div>
         </div>
       </Modal>

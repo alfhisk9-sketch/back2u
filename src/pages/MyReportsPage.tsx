@@ -24,6 +24,7 @@ import { Badge } from '../components/ui/Badge';
 import { Modal } from '../components/ui/Modal';
 import { Input, Textarea } from '../components/ui/Input';
 import { CATEGORY_LABELS } from '../lib/validation';
+import { formatDate } from '../lib/formatters';
 import { RewardsSummaryCard } from '../components/rewards/RewardsSummaryCard';
 
 export const MyReportsPage: React.FC = () => {
@@ -117,9 +118,16 @@ export const MyReportsPage: React.FC = () => {
               <Building className="w-3.5 h-3.5 text-[#059669]" /> {activeCampus?.name}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#12241E] tracking-tight mt-1">
-            Welcome back, {currentUser?.full_name}
-          </h1>
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#12241E] tracking-tight">
+              Welcome back, {currentUser?.full_name}
+            </h1>
+            {currentUser?.team_designation && (
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                {currentUser.team_designation}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-[#536B63] mt-0.5">
             Track your open lost reports, registered found items, and active ownership claims.
           </p>
@@ -322,7 +330,7 @@ export const MyReportsPage: React.FC = () => {
                       </h3>
 
                       <p className="text-xs text-[#536B63]">
-                        {item.location_name} • Reported on {item.date_lost_found}
+                        {item.location_name} • Reported on {formatDate(item.date_lost_found)}
                       </p>
                     </div>
                   </div>

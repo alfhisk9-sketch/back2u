@@ -24,6 +24,7 @@ export interface Profile {
   phone_hidden: boolean;
   default_campus_id?: string;
   role: UserRole;
+  team_designation?: string;
   created_at: string;
   updated_at?: string;
 }

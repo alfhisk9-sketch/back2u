@@ -102,9 +102,14 @@ export const Navbar: React.FC = () => {
 
             {/* Campus Selector Pill */}
             {activeCampus && (
-              <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7EFEA] border border-[#CBD5CE] text-xs font-medium text-[#12241E]">
+              <div
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7EFEA] border border-[#CBD5CE] text-xs font-semibold text-[#12241E]"
+                title={`${activeCampus.name} (${activeCampus.city}, ${activeCampus.state || ''})`}
+              >
                 <Building className="w-3.5 h-3.5 text-[#059669]" />
-                <span className="truncate max-w-[190px]">{activeCampus.name}</span>
+                <span className="truncate max-w-[200px]">
+                  {activeCampus.code === 'DNR-BVRM' ? 'DNR Engineering College' : activeCampus.name}
+                </span>
               </div>
             )}
           </div>
@@ -294,9 +299,16 @@ export const Navbar: React.FC = () => {
                     <div className="px-4 py-2 border-b border-[#E1E8E4]">
                       <p className="text-xs font-bold text-[#12241E]">{currentUser.full_name}</p>
                       <p className="text-[11px] text-[#536B63] truncate">{currentUser.email}</p>
-                      <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#E7EFEA] text-[#12241E]">
-                        {currentUser.role}
-                      </span>
+                      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                        <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#E7EFEA] text-[#12241E]">
+                          {currentUser.role}
+                        </span>
+                        {currentUser.team_designation && (
+                          <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            {currentUser.team_designation}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <Link
