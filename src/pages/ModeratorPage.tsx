@@ -15,6 +15,7 @@ import {
   getAbuseReportsForCampus,
   updateItem,
   deleteItem,
+  verifyFoundItemReport,
   recordAuditLog,
   subscribeDataChanges,
 } from '../services/dataService';
@@ -65,8 +66,16 @@ export const ModeratorPage: React.FC = () => {
     return subscribeDataChanges(loadData);
   }, []);
 
-  const handleModeratorAction = async (itemId: string, action: 'resolve' | 'delete') => {
-    if (action === 'resolve') {
+  const handleModeratorAction = async (itemId: string, action: 'resolve' | 'delete' | 'verify') => {
+    if (action === 'verify') {
+      try {
+        await verifyFoundItemReport(itemId);
+        alert('Report verified! 15 bonus Stars awarded to the finder.');
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'Verification failed.';
+        alert(msg);
+      }
+    } else if (action === 'resolve') {
       await updateItem(itemId, { status: 'resolved' });
       await recordAuditLog({
         action: 'MODERATOR_RESOLVED_ITEM',
@@ -253,6 +262,16 @@ export const ModeratorPage: React.FC = () => {
                         View Item
                       </Button>
                     </Link>
+                    {item.report_type === 'found' && item.status !== 'resolved' && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleModeratorAction(item.id, 'verify')}
+                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 border-amber-300"
+                      >
+                        Verify (+15★)
+                      </Button>
+                    )}
                     {item.status !== 'resolved' && (
                       <Button
                         variant="secondary"

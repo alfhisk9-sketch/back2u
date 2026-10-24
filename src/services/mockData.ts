@@ -1,4 +1,15 @@
-import type { Campus, Profile, Item, Claim, MatchRecord, Notification, AuditLog } from '../types';
+import type {
+  Campus,
+  Profile,
+  Item,
+  Claim,
+  MatchRecord,
+  Notification,
+  AuditLog,
+  RewardTransaction,
+  UserAchievement,
+} from '../types';
+
 
 export const SEED_CAMPUSES: Campus[] = [
   {
@@ -350,3 +361,121 @@ export const SEED_AUDIT_LOGS: AuditLog[] = [
     created_at: '2026-10-22T17:15:00Z',
   },
 ];
+
+export const SEED_REWARD_TRANSACTIONS: RewardTransaction[] = [
+  // Bob Miller (Stanford)
+  {
+    id: 'rtx-1',
+    user_id: 'u-bob-student',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    item_id: 'item-su-found-1',
+    event_type: 'found_report_accepted',
+    points: 10,
+    description: 'Valid found-item report accepted: Found Student Campus ID Card on Red Strap',
+    idempotency_key: 'found_report_item-su-found-1',
+    created_at: '2026-10-22T16:00:00Z',
+  },
+  {
+    id: 'rtx-2',
+    user_id: 'u-bob-student',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    item_id: 'item-su-found-1',
+    event_type: 'moderator_verified',
+    points: 15,
+    description: 'Moderator verification of found item: Found Student Campus ID Card on Red Strap',
+    idempotency_key: 'mod_verified_item-su-found-1',
+    created_at: '2026-10-23T09:00:00Z',
+  },
+  {
+    id: 'rtx-3',
+    user_id: 'u-bob-student',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    item_id: 'item-su-found-2',
+    event_type: 'found_report_accepted',
+    points: 10,
+    description: 'Valid found-item report accepted: Hydro Flask Water Bottle (Teal)',
+    idempotency_key: 'found_report_item-su-found-2',
+    created_at: '2026-10-18T11:00:00Z',
+  },
+  {
+    id: 'rtx-4',
+    user_id: 'u-bob-student',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    item_id: 'item-su-found-2',
+    event_type: 'recovery_completed',
+    points: 25,
+    description: 'Successfully completed item recovery handover: Hydro Flask Water Bottle (Teal)',
+    idempotency_key: 'recovery_completed_claim-prev-1_u-bob-student',
+    created_at: '2026-10-19T14:30:00Z',
+  },
+  // Alice Chen (Stanford)
+  {
+    id: 'rtx-5',
+    user_id: 'u-alice-stanford',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    item_id: 'item-su-found-3',
+    event_type: 'found_report_accepted',
+    points: 10,
+    description: 'Valid found-item report accepted: TI-84 Plus Graphing Calculator',
+    idempotency_key: 'found_report_item-su-found-3',
+    created_at: '2026-10-21T10:15:00Z',
+  },
+  {
+    id: 'rtx-6',
+    user_id: 'u-alice-stanford',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    item_id: 'item-su-found-3',
+    event_type: 'moderator_verified',
+    points: 15,
+    description: 'Moderator verification of found item: TI-84 Plus Graphing Calculator',
+    idempotency_key: 'mod_verified_item-su-found-3',
+    created_at: '2026-10-21T16:00:00Z',
+  },
+  // David Kim (MIT)
+  {
+    id: 'rtx-7',
+    user_id: 'u-david-mit',
+    campus_id: 'c2222222-2222-2222-2222-222222222222',
+    item_id: 'item-mit-found-1',
+    event_type: 'found_report_accepted',
+    points: 10,
+    description: 'Valid found-item report accepted: Sony Wireless Earbuds Case',
+    idempotency_key: 'found_report_item-mit-found-1',
+    created_at: '2026-10-23T12:00:00Z',
+  },
+];
+
+export const SEED_USER_ACHIEVEMENTS: UserAchievement[] = [
+  // Bob Miller (Stanford)
+  {
+    id: 'ach-1',
+    user_id: 'u-bob-student',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    achievement_code: 'first_finder',
+    earned_at: '2026-10-18T11:00:00Z',
+  },
+  {
+    id: 'ach-2',
+    user_id: 'u-bob-student',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    achievement_code: 'bronze_helper',
+    earned_at: '2026-10-22T16:00:00Z',
+  },
+  // Alice Chen (Stanford)
+  {
+    id: 'ach-3',
+    user_id: 'u-alice-stanford',
+    campus_id: 'c1111111-1111-1111-1111-111111111111',
+    achievement_code: 'first_finder',
+    earned_at: '2026-10-21T10:15:00Z',
+  },
+  // David Kim (MIT)
+  {
+    id: 'ach-4',
+    user_id: 'u-david-mit',
+    campus_id: 'c2222222-2222-2222-2222-222222222222',
+    achievement_code: 'first_finder',
+    earned_at: '2026-10-23T12:00:00Z',
+  },
+];
+

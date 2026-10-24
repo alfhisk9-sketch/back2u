@@ -24,8 +24,10 @@ import { Badge } from '../components/ui/Badge';
 import { Modal } from '../components/ui/Modal';
 import { Input, Textarea } from '../components/ui/Input';
 import { CATEGORY_LABELS } from '../lib/validation';
+import { RewardsSummaryCard } from '../components/rewards/RewardsSummaryCard';
 
 export const MyReportsPage: React.FC = () => {
+
   const [currentUser, setCurrentUser] = useState<Profile | null>(null);
   const [activeCampus, setActiveCampus] = useState<Campus | null>(null);
   const [myItems, setMyItems] = useState<Item[]>([]);
@@ -129,6 +131,9 @@ export const MyReportsPage: React.FC = () => {
           </Button>
         </Link>
       </div>
+
+      {/* Back2You Stars & Contribution Rewards Card */}
+      {currentUser && <RewardsSummaryCard userId={currentUser.id} />}
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">

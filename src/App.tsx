@@ -10,6 +10,7 @@ import { MyReportsPage } from './pages/MyReportsPage';
 import { ModeratorPage } from './pages/ModeratorPage';
 import { AdminPage } from './pages/AdminPage';
 import { LoginPage } from './pages/LoginPage';
+import { RewardsPage } from './pages/RewardsPage';
 import { Button } from './components/ui/Button';
 
 // 404 Not Found Page Component
@@ -53,6 +54,8 @@ export function App() {
             <Route path="/report" element={<ReportPage />} />
             <Route path="/items/:id" element={<ItemDetailPage />} />
             <Route path="/my-reports" element={<MyReportsPage />} />
+            <Route path="/dashboard" element={<MyReportsPage />} />
+            <Route path="/rewards" element={<RewardsPage />} />
             <Route path="/moderator" element={<ModeratorPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -60,6 +63,7 @@ export function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
+
 
         {/* Footer */}
         <Footer />

@@ -129,6 +129,7 @@ export type NotificationType =
   | 'claim_received'
   | 'claim_decision'
   | 'return_confirmed'
+  | 'achievement_unlocked'
   | 'admin_notice';
 
 export interface Notification {
@@ -188,3 +189,92 @@ export interface ItemFilters {
   color?: string;
   sortBy?: 'newest' | 'oldest' | 'date_lost_found';
 }
+
+/* =============================================================================
+   BACK2YOU STARS & REWARDS TYPES
+   ============================================================================= */
+
+export type RewardEventType =
+  | 'found_report_accepted'
+  | 'moderator_verified'
+  | 'recovery_completed'
+  | 'helpful_report_recovery';
+
+export interface RewardTransaction {
+  id: string;
+  user_id: string;
+  campus_id: string;
+  item_id?: string;
+  event_type: RewardEventType;
+  points: number;
+  description: string;
+  idempotency_key: string;
+  created_at: string;
+
+  // Relations
+  item?: Item;
+}
+
+export type AchievementCode =
+  | 'first_finder'
+  | 'bronze_helper'
+  | 'silver_helper'
+  | 'gold_helper'
+  | 'campus_hero'
+  | 'recovery_champion'
+  | 'trusted_contributor';
+
+export type AchievementTier = 'bronze' | 'silver' | 'gold' | 'emerald';
+
+export interface AchievementDefinition {
+  code: AchievementCode;
+  title: string;
+  description: string;
+  badge_tier: AchievementTier;
+  icon_name: string;
+  target_count: number;
+  metric: 'found_reports' | 'verified_contributions' | 'completed_recoveries' | 'moderator_verified';
+}
+
+export interface UserAchievement {
+  id: string;
+  user_id: string;
+  campus_id: string;
+  achievement_code: AchievementCode;
+  earned_at: string;
+  definition?: AchievementDefinition;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  user_id: string;
+  display_name: string;
+  avatar_url?: string;
+  stars: number;
+  verified_contributions: number;
+  achievement_level: string;
+  badge_count: number;
+  campus_id: string;
+}
+
+export interface MilestoneProgress {
+  achievement: AchievementDefinition;
+  current_count: number;
+  target_count: number;
+  percentage: number;
+  is_unlocked: boolean;
+}
+
+export interface UserRewardsSummary {
+  user_id: string;
+  current_stars: number;
+  verified_contributions: number;
+  completed_recoveries: number;
+  achievement_level: string;
+  earned_achievements: UserAchievement[];
+  milestones: MilestoneProgress[];
+  next_milestone?: MilestoneProgress;
+  recent_transactions: RewardTransaction[];
+  leaderboard_rank: number;
+}
+

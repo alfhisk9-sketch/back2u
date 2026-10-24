@@ -37,9 +37,17 @@ Built with **React 19**, **TypeScript**, **Tailwind CSS**, and **Supabase (Postg
 5. **In-App Notification Center**
    - High-score match alerts, claim status updates, and return notifications.
 
-6. **Dual Mode Architecture**
+6. **Back2You Stars — Contribution Rewards & Campus Leaderboard**
+   - **Stars Reward Ledger:** Verified points for valid found reports (+10★), moderator verification (+15★), and completed returns (+25★).
+   - **Idempotency Protection:** Database-enforced idempotency key prevents duplicate reward issuance on retries or page reloads.
+   - **Milestone Badges:** Unlocks *First Finder*, *Bronze/Silver/Gold Helper*, *Campus Hero*, *Recovery Champion*, and *Trusted Contributor*.
+   - **Campus Leaderboard:** Weekly, Monthly, and All-Time rankings with strict student privacy (names/avatars only; no emails or student IDs exposed).
+   - **Student Dashboard Integration:** Embedded summary widget tracking real-time Star balances, tier progress, and active milestones.
+
+7. **Dual Mode Architecture**
    - **Live Supabase Mode:** Full persistence with PostgreSQL, Auth, and Storage.
    - **Interactive Demo / Offline Mode:** Instant local evaluation with rich realistic seed data for hackathon judges, administrators, and testing.
+
 
 ---
 

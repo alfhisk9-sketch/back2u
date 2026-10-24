@@ -13,6 +13,7 @@ import {
   User,
   LogOut,
   ExternalLink,
+  Star,
 } from 'lucide-react';
 import {
   getCurrentUser,
@@ -130,6 +131,18 @@ export const Navbar: React.FC = () => {
               }`}
             >
               My Dashboard
+            </Link>
+
+            <Link
+              to="/rewards"
+              className={`px-3.5 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors ${
+                location.pathname === '/rewards'
+                  ? 'text-amber-800 bg-amber-50 font-semibold'
+                  : 'text-[#536B63] hover:text-[#12241E] hover:bg-[#F1F5F2]'
+              }`}
+            >
+              <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
+              Stars & Rewards
             </Link>
 
             {currentUser && (currentUser.role === 'moderator' || currentUser.role === 'admin') && (
@@ -368,6 +381,12 @@ export const Navbar: React.FC = () => {
             className="block px-3 py-2 rounded-lg text-sm font-medium text-[#12241E] hover:bg-[#F1F5F2]"
           >
             My Reports & Claims
+          </Link>
+          <Link
+            to="/rewards"
+            className="block px-3 py-2 rounded-lg text-sm font-semibold text-amber-900 bg-amber-50/70 hover:bg-amber-100"
+          >
+            ⭐ Stars & Rewards Leaderboard
           </Link>
           {currentUser && (currentUser.role === 'moderator' || currentUser.role === 'admin') && (
             <Link
